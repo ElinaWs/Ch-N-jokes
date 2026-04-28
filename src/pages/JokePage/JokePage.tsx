@@ -1,25 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router"
 import { axiosApi } from "../../axiosApi";
+import { useJokesStore } from "../../store/useJokesStore";
 
 export const JokePage = () => {
     const {category} = useParams();
-    const [joke, setJoke] = useState('')
+    const {joke, getJoke} = useJokesStore();
 
     useEffect(() => {
-        const getJoke = async() => {
-            try {
-                const response = await axiosApi(`/random?category=${category}`)
-                const jokeData = response.data
-                setJoke(jokeData.value)
-            }catch(e) {
-                console.log(e)
-            }
-        }
         if (category) {
-            getJoke()
+            getJoke(category)
         }
-    },[category])
+    },[category]);
+
     return(
         <div>
             Joke Category = {category}
